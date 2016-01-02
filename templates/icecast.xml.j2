@@ -1,0 +1,73 @@
+<icecast>
+  <location>Earth</location>
+  <admin>icemaster@localhost</admin>
+
+  <limits>
+    <clients>100</clients>
+    <sources>2</sources>
+    <threadpool>5</threadpool>
+    <queue-size>524288</queue-size>
+    <client-timeout>30</client-timeout>
+    <header-timeout>15</header-timeout>
+    <source-timeout>10</source-timeout>
+    <!-- If enabled, this will provide a burst of data when a client
+         first connects, thereby significantly reducing the startup
+         time for listeners that do substantial buffering. However,
+         it also significantly increases latency between the source
+         client and listening client.  For low-latency setups, you
+         might want to disable this. -->
+    <burst-on-connect>1</burst-on-connect>
+    <!-- same as burst-on-connect, but this allows for being more
+         specific on how much to burst. Most people won't need to
+         change from the default 64k. Applies to all mountpoints  -->
+    <burst-size>65535</burst-size>
+  </limits>
+
+  <authentication>
+    <!-- Sources log in with username 'source' -->
+    <source-password>{{ icecast_source_pass }}</source-password>
+    <!-- Relays log in username 'relay' -->
+    <relay-user>{{ icecast_relay_user }}</relay-user>
+    <relay-password>{{ icecast_relay_pass }}</relay-password>
+
+    <!-- Admin logs in with the username given below -->
+    <admin-user>{{ icecast_admin_user }}</admin-user>
+    <admin-password>{{ icecast_admin_pass }}</admin-password>
+  </authentication>
+
+  <listen-socket>
+    <port>{{ icecast_listener_port }}</port>
+    <bind-address>{{ icecast_listener_bind_address }}</bind-address>
+  </listen-socket>
+
+  <mount type="default">
+{% for key, value in icecast_default_mount.iteritems() %}
+    <{{ key }}>{{ value }}</{{ key }}>
+{% endfor %}
+  </mount>
+
+{% for mount in icecast_mounts %}
+  <mount type="normal">
+{% for key, value in mount.iteritems() %}
+    <{{ key }}>{{ value }}</{{ key }}>
+{% endfor %}
+  </mount>
+{% endfor %}
+
+  <logging>
+    <accesslog>access.log</accesslog>
+    <errorlog>error.log</errorlog>
+    <playlistlog>playlist.log</playlistlog>
+    <loglevel>{{ icecast_log_levels[icecast_log_level] }}</loglevel> <!-- 4 Debug, 3 Info, 2 Warn, 1 Error -->
+  </logging>
+
+  <paths>
+    <!-- Note that if <chroot> is turned on below, these paths must both
+         be relative to the new root, not the original root -->
+    <logdir>/var/log/icecast2</logdir>
+    <webroot>/usr/share/icecast2/web</webroot>
+    <adminroot>/usr/share/icecast2/admin</adminroot>
+    <alias source="/" destination="/status.xsl"/>
+  </paths>
+
+</icecast>

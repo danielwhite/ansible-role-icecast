@@ -1,0 +1,8 @@
+---
+
+# Translation of human-readable log levels for config.
+icecast_log_levels:
+  debug: 4
+  info: 3
+  warn: 2
+  error: 1

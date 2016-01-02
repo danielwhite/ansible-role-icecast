@@ -1,0 +1,30 @@
+---
+
+- include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Provide an mp3 for a silent fallback
+  copy:
+    src: silence.mp3
+    dest: /usr/share/icecast2/web/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Configure Icecast
+  template:
+    src: icecast.xml.j2
+    dest: /etc/icecast2/icecast.xml
+    owner: icecast2
+    group: icecast
+    mode: 0660
+  notify: restart icecast
+
+- include: config-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Ensure Icecast is started on boot
+  service:
+    name: icecast2
+    state: started
+    enabled: yes

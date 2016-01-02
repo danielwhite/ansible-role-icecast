@@ -1,0 +1,19 @@
+---
+
+dependencies: []
+
+galaxy_info:
+  author: Daniel White
+  description: An Ansible role that installs Icecast.
+
+  license: license (BSD)
+
+  min_ansible_version: 1.2
+
+  platforms:
+    - name: Debian
+      versions: all
+    - name: Ubuntu
+      versions: all
+
+  galaxy_tags: []

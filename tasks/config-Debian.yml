@@ -1,0 +1,8 @@
+---
+
+- name: Enable Icecast daemon
+  lineinfile:
+    dest: /etc/default/icecast2
+    regexp: "^ENABLE="
+    line: "ENABLE=true"
+    state: present

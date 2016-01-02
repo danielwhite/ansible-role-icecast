@@ -1,0 +1,6 @@
+---
+
+- name: Ensure icecast is installed.
+  apt:
+    name: icecast2
+    state: present
