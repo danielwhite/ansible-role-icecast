@@ -3,6 +3,15 @@
 - include: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
+- set_fact:
+    icecast_require_init_fix: true
+  # Later versions move to systemd
+  when: ansible_distribution == 'Ubuntu' and
+        ansible_distribution_major_version|version_compare('14', '<=')
+
+- include: fix-init.yml
+  when: icecast_require_init_fix
+
 - name: Provide an mp3 for a silent fallback
   copy:
     src: silence.mp3

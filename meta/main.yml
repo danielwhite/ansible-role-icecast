@@ -12,6 +12,8 @@ galaxy_info:
 
   platforms:
     - name: Debian
-      versions: jessie
+      versions: all
+    - name: Ubuntu
+      versions: all
 
   galaxy_tags: []
