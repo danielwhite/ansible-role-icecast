@@ -68,6 +68,9 @@
     <webroot>/usr/share/icecast2/web</webroot>
     <adminroot>/usr/share/icecast2/admin</adminroot>
     <alias source="/" destination="/status.xsl"/>
+{% if ansible_distribution == "Ubuntu" %}
+    <pidfile>/var/run/icecast2/icecast2.pid</pidfile>
+{% endif %}
   </paths>
 
 </icecast>
