@@ -24,7 +24,7 @@ script:
   # Basic role syntax check
   - docker exec --tty "$(< $container_id)" env TERM=xterm ansible-playbook /etc/ansible/roles/icecast/tests/test.yml --syntax-check
   # Test role
-  - docker exec --tty "$(< $container_id)" env TERM=xterm ansible-playbook /etc/ansible/roles/icecast/tests/test.yml -vvvv
+  - docker exec --tty "$(< $container_id)" env TERM=xterm ansible-playbook /etc/ansible/roles/icecast/tests/test.yml
   # Check idempotence of role
   - >
     docker exec --tty "$(< $container_id)" env TERM=xterm ansible-playbook /etc/ansible/roles/icecast/tests/test.yml
