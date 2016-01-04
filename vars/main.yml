@@ -6,3 +6,6 @@ icecast_log_levels:
   info: 3
   warn: 2
   error: 1
+
+# Most environments should not require the custom init script.
+icecast_require_init_fix: false

@@ -6,21 +6,3 @@
     regexp: "^ENABLE="
     line: "ENABLE=true"
     state: present
-
-- name: Ensure PID directory exists
-  file:
-    path: /var/run/icecast2
-    owner: icecast2
-    group: icecast
-    mode: 0755
-    state: directory
-  when: ansible_distribution == "Ubuntu"
-
-- name: Provide custom init script
-  copy:
-    src: icecast2.init
-    dest: /etc/init.d/icecast2
-    owner: root
-    group: root
-    mode: 0755
-  when: ansible_distribution == "Ubuntu"

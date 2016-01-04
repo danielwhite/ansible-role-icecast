@@ -1,0 +1,20 @@
+---
+
+# Workaround for bad init script that prevents 'service icecast2
+# start' from being run idempotently.
+
+- name: Ensure PID directory exists
+  file:
+    path: /var/run/icecast2
+    owner: icecast2
+    group: icecast
+    mode: 0755
+    state: directory
+
+- name: Provide custom init script
+  copy:
+    src: icecast2.init
+    dest: /etc/init.d/icecast2
+    owner: root
+    group: root
+    mode: 0755
