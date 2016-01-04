@@ -1,6 +1,6 @@
 # Ansible Role: Icecast
 
-[![Build Status](https://travis-ci.org/danielwhite/ansible-role-icecast.svg?branch=master)](https://travis-ci.org/danielwhite/ansible-role-icecast)
+[![Build Status](https://travis-ci.org/danielwhite/ansible-role-icecast.svg?branch=master)](https://travis-ci.org/danielwhite/ansible-role-icecast) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-icecast-blue.svg)](https://galaxy.ansible.com/detail#/role/6762)
 
 An Ansible role that installs [Icecast](http://icecast.org/) on Debian/Ubuntu.
 
