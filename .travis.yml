@@ -1,35 +1,39 @@
 ---
 
-language: python
-python: "2.7"
+# Provide docker for testing other distros
+sudo: required
+services:
+  - docker
 
-# Don't use the new container infrastructure
-sudo: require
+env:
+  - distribution: ubuntu
+    version: 14.04
+    init: /sbin/init
+    run_opts: ""
+
+before_install:
+  - docker pull ${distribution}:${version}
+  - docker build --rm=true --file=tests/Dockerfile.${distribution}-${version} --tag=${distribution}-${version}:ansible tests
 
 install:
-  # Install pip
-  - sudo aptitude install python-pip
-
-  # Install ansible
-  - pip install ansible
-
-  # Check ansible version
-  - ansible --version
-
-  # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
+  - container_id=$(mktemp) # track container
+  - docker run -d --volume="${PWD}":/etc/ansible/roles/icecast:ro ${run_opts} ${distribution}-${version}:ansible "${init}" > "${container_id}"
+  - docker ps -a
 
 script:
   # Basic role syntax check
-  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+  - docker exec --tty "$(< $container_id)" env TERM=xterm ansible-playbook /etc/ansible/roles/icecast/tests/test.yml --syntax-check
   # Test role
-  - ansible-playbook tests/test.yml -i tests/inventory
+  - docker exec --tty "$(< $container_id)" env TERM=xterm ansible-playbook /etc/ansible/roles/icecast/tests/test.yml -vvvv
   # Check idempotence of role
   - >
-    ansible-playbook tests/test.yml -i tests/inventory
+    docker exec --tty "$(< $container_id)" env TERM=xterm ansible-playbook /etc/ansible/roles/icecast/tests/test.yml
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
+
+after_script:
+  - docker stop "$(< $container_id)"
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
